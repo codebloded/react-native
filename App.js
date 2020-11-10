@@ -1,44 +1,50 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import * as  React from 'react';
 import { StyleSheet, Text, View , Button} from 'react-native';
-import {createAppContainer, createStackNavigator} from 'react-navigation';
+import {createDrawerNavigator} from '@react-navigation/drawer'
+import {NavigationContainer} from "@react-navigation/native"
 
-class HomeScreen extends React.Component {
-  render(){
-    return(
-
-      <View style={styles.container}>
-    <Text>React Home Screen !</Text>
-    <Button
-      title="Go to About page"
-      onPress={()=>this.props.navigation.navigate('About')}
-    />
-    <StatusBar style="auto" />
-  </View>
-      )
-  }
+//This is home component in which only a button exist which is linked to the other screen of the app
+function HomeScreen ({navigation}){
+  return(
+    <View style={{flex:1, alignItems:'center' ,justifyContent:'center'}}>
+      <Button
+        title="Home"
+        onPress={()=>navigation('Next')}
+      />
+    </View>
+  )
 }
 
-class AboutScreen extends React.Component{
-  render(){
-    return(
-      <View style={styles.container}>
-        <Text>About Screen Here We go !!!</Text>
-        <StatusBar style="auto"/>
-      </View>
-    )
-  }
+//This is Next component in which only a button exist which is linked to the other screen of the app
+function Next ({navigation}){
+  return(
+    <View style={{flex:1, alignItems:'center' ,justifyContent:'center'}} >
+      <Button
+       onPress={()=>navigation('Home')}
+       title="Next"  
+      />
+    </View>
+  )
 }
-const AppNavigator = createStackNavigator({
-  Home:{
-    screen:HomeScreen
-  },
-  About:{
-    screen:AboutScreen
-  }
-})
-export default createAppContainer(AppNavigator);
 
+//This is how we initialize the Navigator(DRAWER) either drawer or stack or tab 
+const Drawer = createDrawerNavigator();
+
+//parent component App() in which the navigation bar exists
+export default function App(){
+  return(
+    <NavigationContainer>
+    <Drawer.Navigator initialRouteName="Home">
+
+      <Drawer.Screen name="Home" component={HomeScreen}/>
+      <Drawer.Screen name="Next" component={Next}/>
+    </Drawer.Navigator>
+    </NavigationContainer>
+  )
+}
+
+//Customize CSS :)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
